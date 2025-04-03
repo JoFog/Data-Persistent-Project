@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    private int scorePositon = 9;
+    private int scorePositon;
 
     private MainManager mainManager;
 
@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         mainManager = MainManager.Instance;
+        scorePositon = 10;
         CreatBricks();
 
         CompareScore();
@@ -104,7 +105,7 @@ public class GameManager : MonoBehaviour
     private void CompareScore()
     {
         // Check if the current score is greater than the best score
-        for(int i = scorePositon; i >= 0; i--)
+        for(int i = scorePositon -1; i >= 0; i--)
         {
             if (m_Points > mainManager.scoredPlayerScore[i] || mainManager.scoredPlayerScore[i] == 0)
             {
@@ -125,8 +126,18 @@ public class GameManager : MonoBehaviour
 
     private void UpdateScoreTable()
     {
-        if (scorePositon < 9)
+        if (scorePositon < 10)
         {
+            if(scorePositon < 9)
+            {
+                for (int i = 8; i >= scorePositon; i--)
+                {
+                    mainManager.scoredPlayerName[i + 1] = mainManager.scoredPlayerName[i];
+                    mainManager.scoredPlayerScore[i + 1] = mainManager.scoredPlayerScore[i];
+                    
+                }
+            }
+            
             mainManager.scoredPlayerName[scorePositon] = mainManager.currentPlayerName;
             mainManager.scoredPlayerScore[scorePositon] = m_Points;
             mainManager.SaveData();
