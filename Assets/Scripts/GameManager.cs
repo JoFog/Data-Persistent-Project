@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text bestScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -18,13 +19,19 @@ public class GameManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    
+    private int scorePositon = 9;
+
+    private MainManager mainManager;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        mainManager = MainManager.Instance;
         CreatBricks();
 
-        
+        CompareScore();
+        UpdateBestScore();
     }
 
     private void Update()
@@ -50,12 +57,19 @@ public class GameManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+
+        CompareScore();
+        UpdateBestScore();
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+       UpdateScoreTable();
+        
+
     }
 
     private void CreatBricks()
@@ -68,7 +82,7 @@ public class GameManager : MonoBehaviour
         {
             for (int x = 0; x < perLine; ++x)
             {
-                Vector3 position = new Vector3(-1.5f + step * x, 2.5f + i * 0.3f, 0);
+                Vector3 position = new(-1.5f + step * x, 2.5f + i * 0.3f, 0);
                 var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
                 brick.PointValue = pointCountArray[i]; //Defines the point value of the brick
                 brick.onDestroyed.AddListener(AddPoint);
@@ -80,10 +94,43 @@ public class GameManager : MonoBehaviour
     {
         m_Started = true;
         float randomDirection = Random.Range(-1.0f, 1.0f);
-        Vector3 forceDir = new Vector3(randomDirection, 1, 0);
+        Vector3 forceDir = new(randomDirection, 1, 0);
         forceDir.Normalize();
 
         Ball.transform.SetParent(null);
         Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
     }
+
+    private void CompareScore()
+    {
+        // Check if the current score is greater than the best score
+        for(int i = scorePositon; i >= 0; i--)
+        {
+            if (m_Points > mainManager.scoredPlayerScore[i] || mainManager.scoredPlayerScore[i] == 0)
+            {
+                scorePositon = i;
+                
+            }
+           
+            
+        }
+    }
+
+    private void UpdateBestScore() 
+    { 
+        
+        bestScoreText.text = $"{scorePositon}- {mainManager.scoredPlayerName[scorePositon - 1]}:\t{mainManager.scoredPlayerScore[scorePositon - 1]}";
+
+    }
+
+    private void UpdateScoreTable()
+    {
+        if (scorePositon < 9)
+        {
+            mainManager.scoredPlayerName[scorePositon] = mainManager.currentPlayerName;
+            mainManager.scoredPlayerScore[scorePositon] = m_Points;
+            mainManager.SaveData();
+        }
+    }
+
 }

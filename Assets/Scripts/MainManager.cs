@@ -7,13 +7,8 @@ public class MainManager : MonoBehaviour
 
     public string[] scoredPlayerName = new string[10]; // Array to store player names
     public int[] scoredPlayerScore = new int[10]; // Array to store player scores
-    public string bestPlayerName;
-    public int bestPlayerScore;
-
-    public string currentPlayerName; // Variable to store the current player's name
-    public int currentPlayerScore; // Variable to store the current player's score
     
-
+    public string currentPlayerName; // Variable to store the current player's name
 
 
     private void Awake()
@@ -26,12 +21,17 @@ public class MainManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject); // Don't destroy this object when loading a new scene
+        
     }
+
 
     private void Start()
     {
+        
+        currentPlayerName = null;
         // Load data when the game starts
         LoadData();
+
     }
 
 
@@ -49,10 +49,12 @@ public class MainManager : MonoBehaviour
 
     public void SaveData()
     {
-        DataToSave data = new DataToSave();
-        // Enter below the data to be saved
-        data.scoredPlayerName = scoredPlayerName;
-        data.scoredPlayerScore = scoredPlayerScore;
+        DataToSave data = new()
+        {
+            // Enter below the data to be saved
+            scoredPlayerName = scoredPlayerName,
+            scoredPlayerScore = scoredPlayerScore
+        };
 
 
 
