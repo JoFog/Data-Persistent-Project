@@ -5,6 +5,16 @@ public class MainManager : MonoBehaviour
 {
     public static MainManager Instance; // Singleton instance
 
+    public string[] scoredPlayerName = new string[10]; // Array to store player names
+    public int[] scoredPlayerScore = new int[10]; // Array to store player scores
+    public string bestPlayerName;
+    public int bestPlayerScore;
+
+    public string currentPlayerName; // Variable to store the current player's name
+    public int currentPlayerScore; // Variable to store the current player's score
+    
+
+
 
     private void Awake()
     {
@@ -18,13 +28,20 @@ public class MainManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Don't destroy this object when loading a new scene
     }
 
+    private void Start()
+    {
+        // Load data when the game starts
+        LoadData();
+    }
+
 
     [System.Serializable]
 
     class DataToSave
     {
         // Enter below the data to be saved
-
+        public string[] scoredPlayerName = new string[10]; // Array to store player names
+        public int[] scoredPlayerScore = new int[10]; // Array to store player scores
 
 
 
@@ -34,6 +51,9 @@ public class MainManager : MonoBehaviour
     {
         DataToSave data = new DataToSave();
         // Enter below the data to be saved
+        data.scoredPlayerName = scoredPlayerName;
+        data.scoredPlayerScore = scoredPlayerScore;
+
 
 
         string json = JsonUtility.ToJson(data);
@@ -48,7 +68,8 @@ public class MainManager : MonoBehaviour
             string json = File.ReadAllText(path);
             DataToSave data = JsonUtility.FromJson<DataToSave>(json);
             // Enter below the data to be loaded
-
+            scoredPlayerScore = data.scoredPlayerScore;
+            scoredPlayerName = data.scoredPlayerName;
 
 
         }
