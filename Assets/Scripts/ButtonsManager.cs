@@ -1,16 +1,44 @@
+using UnityEngine.SceneManagement;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class ButtonsManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void LoadMainMenu() // Load the main menu scene
     {
         
+       SceneManager.LoadScene(0);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void StartGame()
     {
-        
+        // Load the game scene
+        SceneManager.LoadScene(1);
+
     }
+
+    public void LoadScoreSene()
+    {
+        // Load the score scene
+        SceneManager.LoadScene(2);
+    }
+
+    public void QuitGame()
+    {
+        // Quit the application
+
+#if UNITY_EDITOR
+
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif   
+    }
+
+   
+
+   
 }
