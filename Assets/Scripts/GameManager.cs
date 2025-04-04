@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     public Text ScoreText;
     public Text bestScoreText;
+    public TextMeshProUGUI levelText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -23,16 +25,36 @@ public class GameManager : MonoBehaviour
 
     private MainManager mainManager;
 
+    public int brickCount;
+    public int level;
+
+    public bool isPaddle; //Verify the last touch of the ball
+
 
     // Start is called before the first frame update
     void Start()
     {
         mainManager = MainManager.Instance;
         scorePositon = 10;
-        CreatBricks();
-
+        level = 1;
+        isPaddle = false;
+        
+        LevelSetup(level);
         CompareScore();
         UpdateBestScore();
+    }
+
+    void LevelSetup(int level)
+    {
+        CreatBricks();
+        UpdateBrickCount();
+        levelText.text = "Lv " + level;
+    }
+
+    private void UpdateBrickCount()
+    {
+        brickCount = GameObject.FindGameObjectsWithTag("Brick").Length;
+        
     }
 
     private void Update()
@@ -52,15 +74,26 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+        UpdateBrickCount();
+        if (brickCount == 0 && isPaddle)
+        {
+            isPaddle = false;
+            level++;
+            LevelSetup(level);
+            
+        }
+
     }
 
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"Scr {m_Points}";
+        
 
         CompareScore();
         UpdateBestScore();
+        
     }
 
     public void GameOver()
@@ -119,8 +152,15 @@ public class GameManager : MonoBehaviour
 
     private void UpdateBestScore() 
     { 
-        
-        bestScoreText.text = $"{scorePositon}- {mainManager.scoredPlayerName[scorePositon - 1]}:\t{mainManager.scoredPlayerScore[scorePositon - 1]}";
+        if(scorePositon == 0)
+        {
+            bestScoreText.text = "You are THE BEST!";
+        }
+        else
+        {
+            bestScoreText.text = $"{scorePositon}- {mainManager.scoredPlayerName[scorePositon - 1]}:\t{mainManager.scoredPlayerScore[scorePositon - 1]}";
+        }
+            
 
     }
 
