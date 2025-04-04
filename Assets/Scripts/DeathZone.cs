@@ -7,8 +7,16 @@ public class DeathZone : MonoBehaviour
 {
     public GameManager Manager;
 
+    private AudioSource deathSound;
+
+    private void Start()
+    {
+        deathSound = GetComponent<AudioSource>();
+    }
+
     private void OnCollisionEnter(Collision other)
     {
+        deathSound.Play();
         Destroy(other.gameObject);
         Manager.GameOver();
     }

@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Brick
   - Paddle
+  - Left
+  - Right
+  - Ball
+  - EndZone
   layers:
   - Default
   - TransparentFX

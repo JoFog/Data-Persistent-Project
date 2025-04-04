@@ -6,8 +6,11 @@ public class Paddle : MonoBehaviour
 {
     public float Speed = 2.0f;
     public float MaxMovement = 2.0f;
+
     
-    
+
+   
+
 
     // Update is called once per frame
     void Update()
@@ -24,4 +27,6 @@ public class Paddle : MonoBehaviour
 
         transform.position = pos;
     }
+
+   
 }

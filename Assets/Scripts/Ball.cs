@@ -9,9 +9,12 @@ public class Ball : MonoBehaviour
 
     public GameManager gameManager;
 
+    
+
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        
     }
     
     private void OnCollisionExit(Collision other)
@@ -20,11 +23,29 @@ public class Ball : MonoBehaviour
 
         if (other.gameObject.CompareTag("Right"))
         {
-            velocity.x += 0.5f;
+            if(velocity.x < 0)
+            {
+                velocity.x = -velocity.x;
+            }
+            else
+            {
+                velocity.x += 0.5f;
+            }
+
+            
         }
         if(other.gameObject.CompareTag("Left"))
         {
-            velocity.x -= 0.5f;
+            if (velocity.x > 0)
+            {
+                velocity.x = -velocity.x;
+            }
+            else
+            {
+                velocity.x -= 0.5f;
+            }
+            
+
         }
 
 
@@ -49,7 +70,14 @@ public class Ball : MonoBehaviour
             velocity = velocity.normalized * (1.5f + gameManager.level * 0.5f);
         }
 
+        //Make a booster when hitting the special part of the paddle
+        if (other.gameObject.CompareTag("Right") || other.gameObject.CompareTag("Left"))
+        {
+            velocity = (1.5f + gameManager.level * 0.5f) * 2 * velocity.normalized;
+        }
+
         m_Rigidbody.linearVelocity = velocity;
+
 
         if (other.gameObject.CompareTag("Paddle") || other.gameObject.CompareTag("Right") || other.gameObject.CompareTag("Left"))
         {
@@ -58,6 +86,7 @@ public class Ball : MonoBehaviour
         else
         {
             gameManager.isPaddle = false;
+
         }
 
     }

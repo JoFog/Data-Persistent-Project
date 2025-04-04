@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public Text bestScoreText;
     public TextMeshProUGUI levelText;
     public GameObject GameOverText;
+    private AudioSource leveUpSound;
     
     private bool m_Started = false;
     private int m_Points;
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        leveUpSound = GetComponent<AudioSource>();
         mainManager = MainManager.Instance;
         scorePositon = 10;
         level = 1;
@@ -80,7 +82,8 @@ public class GameManager : MonoBehaviour
             isPaddle = false;
             level++;
             LevelSetup(level);
-            
+            leveUpSound.Play();
+
         }
 
     }

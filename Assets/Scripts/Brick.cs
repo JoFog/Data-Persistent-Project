@@ -7,12 +7,14 @@ using UnityEngine.Events;
 public class Brick : MonoBehaviour
 {
     public UnityEvent<int> onDestroyed;
+    private AudioSource brickSound;
     
     public int PointValue;
 
     void Start()
     {
         var renderer = GetComponentInChildren<Renderer>();
+        brickSound = GetComponent<AudioSource>();
 
         MaterialPropertyBlock block = new();
         switch (PointValue)
@@ -35,11 +37,7 @@ public class Brick : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        DestroyBrick();
-    }
-
-    private void OnMouseDown()
-    {
+        brickSound.Play();
         DestroyBrick();
     }
 
