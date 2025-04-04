@@ -28,7 +28,7 @@ public class ScoreShow : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {
-            string linha = $"{i + 1,-3}-\t {mainManager.scoredPlayerName[i],-15}\t\t:{mainManager.scoredPlayerScore[i],-5} \n";
+            string linha = $"{i + 1,-3}-\t {mainManager.scoredPlayerName[i],-15}\t\t\t:{mainManager.scoredPlayerScore[i],-5} \n";
 
             foreach (char letter in linha)
             {

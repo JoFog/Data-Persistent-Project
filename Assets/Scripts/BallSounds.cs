@@ -24,7 +24,9 @@ public class BallSounds : MonoBehaviour
             case "Paddle":
                 ballSound[0].Play();
                 break;
-            
+            case "Wall":
+                ballSound[0].Play();
+                break;
 
             default:
                 break;

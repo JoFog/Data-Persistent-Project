@@ -10,6 +10,7 @@ TagManager:
   - Right
   - Ball
   - EndZone
+  - Wall
   layers:
   - Default
   - TransparentFX
